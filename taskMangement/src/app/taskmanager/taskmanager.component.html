@@ -1,0 +1,36 @@
+<h2 class="heading">📝 Task Manager</h2>
+
+<div class="input-container">
+  <input [(ngModel)]="newTask" placeholder="Enter a new task" />
+  <button (click)="addTask()">Add Task</button>
+</div>
+
+<table *ngIf="tasks.length > 0; else noTasks" class="task-table">
+  <thead>
+    <tr>
+      <th>Task Name</th>
+      <th>Status</th>
+      <th>Created At</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasks; let i = index">
+      <td>{{ task.title }}</td>
+      <td>
+        <span [ngClass]="{ 'status-pending': task.status === 'Pending', 'status-completed': task.status === 'Completed' }">
+          {{ task.status }}
+        </span>
+      </td>
+      <td>{{ task.createdAt | date: 'short' }}</td>
+      <td>
+        <button *ngIf="task.status === 'Pending'" (click)="markComplete(task)" class="btn complete">✔ Complete</button>
+        <button (click)="deleteTask(i)" class="btn delete">🗑 Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #noTasks>
+  <p class="empty-msg">No tasks yet. Add some!</p>
+</ng-template>
